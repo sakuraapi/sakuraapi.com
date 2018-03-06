@@ -1,4 +1,9 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed
+}                         from '@angular/core/testing';
+import {ComponentsModule} from '../components.module';
 
 import {HeroImageComponent} from './hero-image.component';
 
@@ -7,9 +12,12 @@ describe('HeroImageComponent', () => {
   let fixture: ComponentFixture<HeroImageComponent>;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [HeroImageComponent]
-    })
+    TestBed
+      .configureTestingModule({
+        imports: [
+          ComponentsModule
+        ]
+      })
       .compileComponents();
   }));
 

@@ -1,0 +1,9 @@
+@import "~sass/lib";
+
+:host {
+  @extend %app-defaults;
+
+  .content {
+    padding: 25px;
+  }
+}

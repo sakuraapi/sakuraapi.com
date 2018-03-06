@@ -5,24 +5,22 @@ import {ServiceWorkerModule}     from '@angular/service-worker';
 import {environment}             from '../environments/environment';
 import {AppRoutingModule}        from './app-routing.module';
 import {AppComponent}            from './app.component';
-import {HeaderComponent}         from './shared/components/header/header.component';
-import {HeroImageComponent}      from './shared/components/hero-image/hero-image.component';
-import {LogoComponent}           from './shared/components/logo/logo.component';
-import { TaglineBannerComponent } from './shared/components/tagline-banner/tagline-banner.component';
+import {HomeModule}              from './home/home.module';
+import {PageNotFoundComponent}   from './page-not-found/page-not-found.component';
+import {ComponentsModule}        from './shared/components/components.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeroImageComponent,
-    LogoComponent,
-    HeaderComponent,
-    TaglineBannerComponent
+    PageNotFoundComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({appId: 'serverApp'}),
     BrowserAnimationsModule,
+    ComponentsModule,
+    HomeModule,
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
-    AppRoutingModule // keep last
+    AppRoutingModule // leave last, or module routing won't work
   ],
   providers: [],
   bootstrap: [AppComponent]

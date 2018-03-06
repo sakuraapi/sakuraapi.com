@@ -12,25 +12,14 @@
 body {
   display: flex;
   background-color: colorBackground();
-  width: 100%;
+
+  &, app-root {
+    width: 100%;
+  }
 }
 
 input {
   padding: 10px;
-}
-
-ul.menu {
-  display: flex;
-  list-style: none;
-
-  li {
-    &:not(:last-child) {
-      margin-right: 10px;
-    }
-    a {
-      text-decoration: none;
-    }
-  }
 }
 
 /**

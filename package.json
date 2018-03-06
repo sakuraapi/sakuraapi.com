@@ -1,7 +1,8 @@
 {
-  "name": "website",
+  "name": "sakuraapi-com-website",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
+  "author": "Jean-Pierre E. Poveda",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -11,6 +12,11 @@
     "e2e": "ng e2e"
   },
   "private": true,
+  "homepage": "https://github.com/sakuraapi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sakuraapi/sakuraapi.com"
+  },
   "dependencies": {
     "@angular/animations": "^5.2.0",
     "@angular/cdk": "^5.2.3",
@@ -22,6 +28,7 @@
     "@angular/material": "^5.2.3",
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
+    "@angular/platform-server": "^5.2.7",
     "@angular/router": "^5.2.0",
     "@angular/service-worker": "^5.2.0",
     "core-js": "^2.4.1",
@@ -37,6 +44,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
+    "diff": "^3.5.0",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",
@@ -44,6 +52,9 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-mocha": "^1.3.0",
+    "karma-mocha-reporter": "^2.2.5",
+    "mocha": "^5.0.2",
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",

@@ -1,0 +1,64 @@
+@import "~sass/lib";
+
+:host {
+  @extend %app-defaults;
+
+  ul {
+    display: flex;
+    list-style: none;
+
+    li {
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+      a {
+        text-decoration: none;
+        cursor: pointer;
+
+        &:visited {
+          color: colorForeground();
+        }
+
+        &:hover {
+          color: colorSecondary();
+        }
+      }
+    }
+  }
+
+  &.vertical {
+    ul {
+      flex-direction: column;
+
+      li:not(:first-child) {
+        margin-top: 5px;
+      }
+      a {
+        text-transform: capitalize;
+      }
+    }
+  }
+
+}
+
+:host-context(.header) {
+  @include media-medium() {
+    text-transform: lowercase;
+    background-color: colorAccent();
+  }
+}
+
+:host-context(.footer) {
+  background-color: colorPrimary();
+  a {
+    color: colorForegroundInverted();
+
+    &:visited {
+      color: colorForegroundInverted() !important;
+    }
+
+    &:hover {
+      color: colorAccent() !important;
+    }
+  }
+}

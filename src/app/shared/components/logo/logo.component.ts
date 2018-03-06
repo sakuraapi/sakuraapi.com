@@ -4,13 +4,14 @@ import {
   style,
   transition,
   trigger
-} from '@angular/animations';
+}               from '@angular/animations';
 import {
   Component,
   HostListener,
   Input,
   OnInit
-} from '@angular/core';
+}               from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-logo',
@@ -30,8 +31,16 @@ export class LogoComponent implements OnInit {
   rotatedState = 'default';
   @Input() showTitle = false;
 
+  constructor(private router: Router) {
+
+  }
+
   ngOnInit() {
     this.rotateLogo();
+  }
+
+  onClick() {
+    this.router.navigate(['/']);
   }
 
   @HostListener('window:resize')

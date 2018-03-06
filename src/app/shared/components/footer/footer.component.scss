@@ -1,0 +1,19 @@
+@import "~sass/lib";
+
+:host {
+  @extend %app-defaults;
+  flex-direction: row;
+  margin-top: 25px;
+
+  background-color: colorPrimary();
+
+  padding: 20px;
+
+  p {
+    color: colorForegroundInverted();
+  }
+
+  div {
+    width: 50%;
+  }
+}

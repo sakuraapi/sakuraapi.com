@@ -20,6 +20,10 @@
       display: none;
     }
 
+    h1, img {
+      cursor: pointer;
+    }
+
     @include media-medium() {
       img {
         width: 75px;

@@ -4,16 +4,19 @@ import {
   TestBed
 }                             from '@angular/core/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ComponentsModule}     from '../components.module';
-import {LogoComponent}        from './logo.component';
+import {ComponentsModule}     from '../shared/components/components.module';
+import {HomeComponent}        from './home.component';
 
-describe('LogoComponent', () => {
-  let component: LogoComponent;
-  let fixture: ComponentFixture<LogoComponent>;
+describe('HomeComponent', () => {
+  let component: HomeComponent;
+  let fixture: ComponentFixture<HomeComponent>;
 
   beforeEach(async(() => {
     TestBed
       .configureTestingModule({
+        declarations: [
+          HomeComponent
+        ],
         imports: [
           ComponentsModule,
           NoopAnimationsModule
@@ -23,7 +26,7 @@ describe('LogoComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LogoComponent);
+    fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -5,11 +5,11 @@ import {
 }                         from '@angular/core/testing';
 import {ComponentsModule} from '../components.module';
 
-import {TaglineBannerComponent} from './tagline-banner.component';
+import {MenuComponent} from './menu.component';
 
-describe('TaglineBannerComponent', () => {
-  let component: TaglineBannerComponent;
-  let fixture: ComponentFixture<TaglineBannerComponent>;
+describe('MenuComponent', () => {
+  let component: MenuComponent;
+  let fixture: ComponentFixture<MenuComponent>;
 
   beforeEach(async(() => {
     TestBed
@@ -22,7 +22,7 @@ describe('TaglineBannerComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaglineBannerComponent);
+    fixture = TestBed.createComponent(MenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
