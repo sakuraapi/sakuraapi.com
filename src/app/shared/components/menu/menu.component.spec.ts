@@ -2,8 +2,9 @@ import {
   async,
   ComponentFixture,
   TestBed
-}                         from '@angular/core/testing';
-import {ComponentsModule} from '../components.module';
+}                            from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
+import {ComponentsModule}    from '../components.module';
 
 import {MenuComponent} from './menu.component';
 
@@ -15,7 +16,8 @@ describe('MenuComponent', () => {
     TestBed
       .configureTestingModule({
         imports: [
-          ComponentsModule
+          ComponentsModule,
+          RouterTestingModule
         ]
       })
       .compileComponents();

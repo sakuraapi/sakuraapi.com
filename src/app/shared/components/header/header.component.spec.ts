@@ -4,6 +4,7 @@ import {
   TestBed
 }                             from '@angular/core/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterTestingModule}  from '@angular/router/testing';
 import {ComponentsModule}     from '../components.module';
 import {HeaderComponent}      from './header.component';
 
@@ -16,7 +17,8 @@ describe('HeaderComponent', () => {
       .configureTestingModule({
         imports: [
           ComponentsModule,
-          NoopAnimationsModule
+          NoopAnimationsModule,
+          RouterTestingModule
         ]
       })
       .compileComponents();
