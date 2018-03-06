@@ -1,0 +1,17 @@
+@mixin media-large() {
+  @media only screen and (min-device-width: 0px) and (max-device-width: 975px) {
+    @content;
+  }
+}
+
+@mixin media-medium() {
+  @media only screen and (min-device-width: 0px) and (max-device-width: 750px) {
+    @content;
+  }
+}
+
+@mixin media-mobile() {
+  @media only screen and (min-device-width: 0px) and (max-device-width: 480px) {
+    @content;
+  }
+}

@@ -1,0 +1,69 @@
+@import "~sass/lib";
+
+:host {
+  @extend %app-defaults;
+
+  div {
+    h2 {
+      padding-right: 15%;
+      padding-left: 15%;
+    }
+
+    &.small {
+      background-color: colorAccent();
+      padding: 20px;
+      h2 {
+        font-size: 14px;
+        text-transform: uppercase;
+      }
+
+      @include media-medium() {
+        display: none;
+      }
+    }
+
+    &.medium {
+      background-color: colorForeground(9);
+      padding: 25px;
+
+      h2 {
+        color: colorForeground();
+        font-size: 28px;
+        line-height: 44.8px;
+        font-weight: 400;
+
+        @include media-medium() {
+          font-size: 18px;
+          line-height: 28px;
+
+          padding-right: 5%;
+          padding-left: 5%;
+        }
+      }
+
+      div {
+        margin-top: 20px;
+        margin-right: 15%;
+        margin-left: 15%;
+        padding: 10px;
+        background-color: colorBackground();
+
+        p {
+          font-family: "Courier New", sans-serif;
+        }
+
+        @include media-mobile() {
+          p:after {
+            content: ' \23CE';
+          }
+        }
+      }
+
+      @include media-medium() {
+        padding: 0;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+    }
+  }
+}

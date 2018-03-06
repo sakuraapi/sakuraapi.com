@@ -1,0 +1,5 @@
+@import "~sass/lib";
+
+:host {
+  @extend %app-defaults;
+}

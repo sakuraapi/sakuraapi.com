@@ -1,0 +1,40 @@
+@function color($key: 'primary') {
+  @return map-get($app-color-cherry, $key);
+}
+
+@function color-level($color-name: 'primary', $level: 0) {
+  // see: https://scotch.io/tutorials/aesthetic-sass-2-colors
+  $color: color($color-name);
+  $color-base: if($level < 0, black, white);
+  @return mix($color-base, $color, abs($level) * $app-color-interval);
+}
+
+// $level will lighten (positive numbers) or darken (negative numbers)
+@function colorPrimary($level: 0) {
+  @return color-level('primary', $level);
+}
+
+// $level will lighten (positive numbers) or darken (negative numbers)
+@function colorAccent($level: 0) {
+  @return color-level('accent', $level);
+}
+
+// $level will lighten (positive numbers) or darken (negative numbers)
+@function colorSecondary($level: 0) {
+  @return color-level('secondary', $level);
+}
+
+// $level will lighten (positive numbers) or darken (negative numbers)
+@function colorForeground($level: 0) {
+  @return color-level('foreground', $level);
+}
+
+// $level will lighten (positive numbers) or darken (negative numbers)
+@function colorForegroundInverted($level: 0) {
+  @return invert(color-level('foreground', $level));
+}
+
+// $level will lighten (positive numbers) or darken (negative numbers)
+@function colorBackground($level: 0) {
+  @return color-level('background', $level);
+}

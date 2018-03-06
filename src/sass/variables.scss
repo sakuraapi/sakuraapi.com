@@ -1,0 +1,48 @@
+$app-border-thick: 2px;
+$app-border-thin: 1px;
+
+$app-color-interval: 10% !global;
+
+$app-color-cherry: (
+  'primary': #857453,
+  'accent': #c2d7e9,
+  'secondary': #e02f90,
+  'foreground': #191919,
+  'background': #ffffff
+);
+
+$app-font-body: 'Open Sans', sans-serif;
+$app-font-headers: 'Work Sans', sans-serif;
+
+$app-radius-standard: 5px;
+
+/**
+ * Debugging goodness
+ */
+$debug: false;
+$debug-size: 1px;
+$debug-type: solid;
+$debug-color-app-form: orange;
+$debug-color-app-root: green;
+$debug-color-div: red;
+
+/**
+ * Debugging formatting
+ */
+div {
+  @if ($debug) {
+    border: $debug-size $debug-type $debug-color-div !important;
+  }
+}
+
+app-root {
+  @if ($debug) {
+    border: $debug-size * 5 $debug-type $debug-color-app-root !important;
+  }
+}
+
+form {
+  @if ($debug) {
+    border: $debug-size $debug-type $debug-color-app-form !important;
+  }
+}

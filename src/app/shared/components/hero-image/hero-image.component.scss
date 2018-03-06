@@ -1,0 +1,9 @@
+@import "~sass/lib";
+
+:host {
+  @extend %app-defaults;
+
+  img {
+    width: 100%;
+  }
+}

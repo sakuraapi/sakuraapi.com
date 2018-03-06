@@ -1,0 +1,48 @@
+@import "~sass/lib";
+
+:host {
+  @extend %app-defaults;
+
+  flex-direction: row;
+
+  padding-right: 15%;
+  padding-left: 15%;
+
+  @include media-large() {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  @include media-medium() {
+    flex-direction: column !important;
+  }
+
+  div {
+    flex-direction: row;
+    flex-grow: 2;
+    justify-content: flex-end;
+
+    // menu items
+    padding-top: 25px;
+
+    text-transform: uppercase;
+
+    @include media-large() {
+      padding-right: 10px;
+    }
+
+    @include media-medium() {
+      justify-content: flex-start;
+      padding-top: 10px;
+      padding-left: 10px;
+      padding-bottom: 10px;
+
+      background-color: colorAccent();
+
+      a {
+        color: colorForeground();
+        text-transform: lowercase;
+      }
+    }
+  }
+}

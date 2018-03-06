@@ -1,0 +1,19 @@
+/*
+ * each of your components should setup like this:
+ * @import "~sass/styles";
+ *
+ * :host {
+ *   @extend %app-defaults;
+ *   // your css goes here
+ * }
+ */
+%app-defaults {
+  background-color: colorBackground();
+  display: flex;
+  flex-direction: column;
+
+  div {
+    display: flex;
+    flex-direction: column;
+  }
+}
