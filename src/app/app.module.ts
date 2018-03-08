@@ -1,3 +1,4 @@
+import {HttpClientModule}        from '@angular/common/http';
 import {NgModule}                from '@angular/core';
 import {BrowserModule}           from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -8,6 +9,9 @@ import {AppComponent}            from './app.component';
 import {HomeModule}              from './home/home.module';
 import {PageNotFoundComponent}   from './page-not-found/page-not-found.component';
 import {ComponentsModule}        from './shared/components/components.module';
+import './shared/rxjs-imports';
+import {httpProviders}           from './shared/services/http/http-providers';
+import {WordpressService}        from './shared/services/wordpress.service';
 
 @NgModule({
   declarations: [
@@ -19,10 +23,15 @@ import {ComponentsModule}        from './shared/components/components.module';
     BrowserAnimationsModule,
     ComponentsModule,
     HomeModule,
+    HttpClientModule,
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
-    AppRoutingModule // leave last, or module routing won't work
+    // leave AppRoutingModule last, or submodule routing won't work
+    AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    httpProviders,
+    WordpressService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

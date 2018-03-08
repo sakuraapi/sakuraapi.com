@@ -31,7 +31,9 @@
     "@angular/platform-server": "^5.2.7",
     "@angular/router": "^5.2.0",
     "@angular/service-worker": "^5.2.0",
+    "@types/moment": "^2.13.0",
     "core-js": "^2.4.1",
+    "moment": "^2.21.0",
     "normalize.css": "^8.0.0",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
