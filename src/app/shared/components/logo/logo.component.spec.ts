@@ -5,7 +5,7 @@ import {
 }                             from '@angular/core/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterTestingModule}  from '@angular/router/testing';
-import {ComponentsModule}     from '../components.module';
+import {SharedModule}         from '../../shared.module';
 import {LogoComponent}        from './logo.component';
 
 describe('LogoComponent', () => {
@@ -16,9 +16,9 @@ describe('LogoComponent', () => {
     TestBed
       .configureTestingModule({
         imports: [
-          ComponentsModule,
           NoopAnimationsModule,
-          RouterTestingModule
+          RouterTestingModule,
+          SharedModule
         ]
       })
       .compileComponents();

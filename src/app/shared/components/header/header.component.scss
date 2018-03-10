@@ -5,8 +5,8 @@
 
   flex-direction: row;
 
-  padding-right: 15%;
-  padding-left: 15%;
+  padding-right: $app-center-content-buffer;
+  padding-left: $app-center-content-buffer;
 
   @include media-large() {
     padding-right: 0;

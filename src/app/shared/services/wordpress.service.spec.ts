@@ -1,17 +1,17 @@
 import {
   HttpClientTestingModule,
   HttpTestingController
-}                               from '@angular/common/http/testing';
-import {TestBed}                from '@angular/core/testing';
-import {singlePostResponseJson} from '../models/wordpress-post.spec';
-import {httpProviders}          from './http/http-providers';
-import {WordpressApiService}    from './http/wordpress-api.service';
-import {WordpressService}       from './wordpress.service';
+}                             from '@angular/common/http/testing';
+import {TestBed}              from '@angular/core/testing';
+import {listPostResponseJson} from '../models/wordpress-post.spec';
+import {httpProviders}        from './http/http-providers';
+import {WordpressApiService}  from './http/wordpress-api.service';
+import {WordpressService}     from './wordpress.service';
 
 describe('WordpressService', () => {
+  let api: WordpressApiService;
   let request: HttpTestingController;
   let wpService: WordpressService;
-  let api: WordpressApiService;
 
   beforeEach(() => {
     TestBed
@@ -41,7 +41,7 @@ describe('WordpressService', () => {
       .subscribe(done, done.fail);
 
     const req = request.expectOne(api.url('/posts?page=1'));
-    req.flush(singlePostResponseJson);
+    req.flush(listPostResponseJson);
     expect(req.request.method).toBe('GET');
   });
 
@@ -57,7 +57,7 @@ describe('WordpressService', () => {
       .subscribe(done, done.fail);
 
     const req = request.expectOne(api.url('/posts'));
-    req.flush(singlePostResponseJson, {
+    req.flush(listPostResponseJson, {
       headers: {
         'x-wp-total': '777',
         'x-wp-totalpages': '111'
@@ -78,7 +78,7 @@ describe('WordpressService', () => {
 
     request
       .expectOne(api.url('/posts'))
-      .flush(singlePostResponseJson, {
+      .flush(listPostResponseJson, {
         headers: {
           'x-wp-total': 'a',
           'x-wp-totalpages': 'b'

@@ -47,7 +47,7 @@ export class WordpressService {
       .map((resp) => {
         this._totalPosts = Number(resp.headers.get('x-wp-total')) || 0;
         this._totalPages = Number(resp.headers.get('x-wp-totalpages')) || 0;
-        return resp.body as any[];
+        return resp.body;
       })
       .map(WordpressPost.fromJsonArray);
   }

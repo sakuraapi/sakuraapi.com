@@ -5,8 +5,8 @@
 
   div {
     h2 {
-      padding-right: 15%;
-      padding-left: 15%;
+      padding-right: $app-center-content-buffer;
+      padding-left: $app-center-content-buffer;
     }
 
     &.small {
@@ -43,8 +43,8 @@
 
       div {
         margin-top: 20px;
-        margin-right: 15%;
-        margin-left: 15%;
+        margin-right: $app-center-content-buffer;
+        margin-left: $app-center-content-buffer;
         padding: 10px;
         background-color: colorBackground();
 

@@ -6,7 +6,12 @@
 export const environment = {
   production: false,
   api: {
-    github: 'github',
+    github: 'https://api.github.com',
     wordpress: 'https://public-api.wordpress.com/wp/v2/sites/blog.sakuraapi.com'
+  },
+  debug: {
+    level: 'debug',
+    apiCalls: '*',
+    noBody: []
   }
 };

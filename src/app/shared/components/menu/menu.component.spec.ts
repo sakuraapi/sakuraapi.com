@@ -4,7 +4,7 @@ import {
   TestBed
 }                            from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
-import {ComponentsModule}    from '../components.module';
+import {SharedModule}        from '../../shared.module';
 
 import {MenuComponent} from './menu.component';
 
@@ -16,8 +16,8 @@ describe('MenuComponent', () => {
     TestBed
       .configureTestingModule({
         imports: [
-          ComponentsModule,
-          RouterTestingModule
+          RouterTestingModule,
+          SharedModule
         ]
       })
       .compileComponents();

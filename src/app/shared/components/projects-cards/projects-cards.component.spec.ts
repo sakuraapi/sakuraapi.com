@@ -5,11 +5,12 @@ import {
   TestBed
 }                                from '@angular/core/testing';
 import {SharedModule}            from '../../shared.module';
-import {TaglineBannerComponent}  from './tagline-banner.component';
 
-describe('TaglineBannerComponent', () => {
-  let component: TaglineBannerComponent;
-  let fixture: ComponentFixture<TaglineBannerComponent>;
+import {ProjectsCardsComponent} from './projects-cards.component';
+
+describe('ProjectsCardsComponent', () => {
+  let component: ProjectsCardsComponent;
+  let fixture: ComponentFixture<ProjectsCardsComponent>;
 
   beforeEach(async(() => {
     TestBed
@@ -23,7 +24,7 @@ describe('TaglineBannerComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaglineBannerComponent);
+    fixture = TestBed.createComponent(ProjectsCardsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

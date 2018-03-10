@@ -1,11 +1,12 @@
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {
   async,
   ComponentFixture,
   TestBed
-}                             from '@angular/core/testing';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ComponentsModule}     from '../shared/components/components.module';
-import {HomeComponent}        from './home.component';
+}                                from '@angular/core/testing';
+import {NoopAnimationsModule}    from '@angular/platform-browser/animations';
+import {SharedModule}            from '../shared/shared.module';
+import {HomeComponent}           from './home.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -18,8 +19,9 @@ describe('HomeComponent', () => {
           HomeComponent
         ],
         imports: [
-          ComponentsModule,
-          NoopAnimationsModule
+          HttpClientTestingModule,
+          NoopAnimationsModule,
+          SharedModule
         ]
       })
       .compileComponents();

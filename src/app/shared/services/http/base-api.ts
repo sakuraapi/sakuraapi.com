@@ -8,6 +8,79 @@ import {
 import {HttpObserve} from '@angular/common/http/src/client';
 import {Observable}  from 'rxjs/Observable';
 
+export interface IHttpClientOptionsRequest {
+  body?: any;
+  headers?: HttpHeaders | { [header: string]: string | string[] };
+  observe?: HttpObserve;
+  params?: HttpParams | { [param: string]: string | string[] };
+  reportProgress?: boolean;
+  responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
+  withCredentials?: boolean;
+}
+
+export interface IHttpClientOptionsDelete {
+  headers?: HttpHeaders | { [header: string]: string | string[] };
+  observe?: HttpObserve;
+  params?: HttpParams | { [param: string]: string | string[] };
+  reportProgress?: boolean;
+  responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
+  withCredentials?: boolean;
+}
+
+export interface IHttpClientOptionsGet {
+  headers?: HttpHeaders | { [header: string]: string | string[] };
+  observe?: HttpObserve;
+  params?: HttpParams | { [param: string]: string | string[] };
+  reportProgress?: boolean;
+  responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
+  withCredentials?: boolean;
+}
+
+export interface IHttpClientOptionsHead {
+  headers?: HttpHeaders | { [header: string]: string | string[] };
+  observe?: HttpObserve;
+  params?: HttpParams | { [param: string]: string | string[] };
+  reportProgress?: boolean;
+  responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
+  withCredentials?: boolean;
+}
+
+export interface IHttpClientOptionsOptions {
+  headers?: HttpHeaders | { [header: string]: string | string[] },
+  observe?: HttpObserve,
+  params?: HttpParams | { [param: string]: string | string[] },
+  reportProgress?: boolean,
+  responseType?: 'arraybuffer' | 'blob' | 'json' | 'text',
+  withCredentials?: boolean,
+}
+
+export interface IHttpClientOptionsPatch {
+  headers?: HttpHeaders | { [header: string]: string | string[] };
+  observe?: HttpObserve;
+  params?: HttpParams | { [param: string]: string | string[] };
+  reportProgress?: boolean;
+  responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
+  withCredentials?: boolean;
+}
+
+export interface IHttpClientOptionsPost {
+  headers?: HttpHeaders | { [header: string]: string | string[] };
+  observe?: HttpObserve;
+  params?: HttpParams | { [param: string]: string | string[] };
+  reportProgress?: boolean;
+  responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
+  withCredentials?: boolean;
+}
+
+export interface IHttpClientOptionsPut {
+  headers?: HttpHeaders | { [header: string]: string | string[] };
+  observe?: HttpObserve;
+  params?: HttpParams | { [param: string]: string | string[] };
+  reportProgress?: boolean;
+  responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
+  withCredentials?: boolean;
+}
+
 export abstract class BaseApiService {
 
   protected _baseUrl: string;
@@ -15,6 +88,8 @@ export abstract class BaseApiService {
   get baseUrl(): string {
     return this._baseUrl;
   }
+
+  debugApiCallLogger: (path: string, source: any, body: any, method: string) => void;
 
   constructor(private httpClient: HttpClient, baseUrl: string) {
     this._baseUrl = baseUrl;
@@ -158,16 +233,14 @@ export abstract class BaseApiService {
     responseType?: 'arraybuffer' | 'blob' | 'json' | 'text',
     withCredentials?: boolean,
   }): Observable<any>;
-  request(method: string, url?: string, options: {
-    body?: any,
-    headers?: HttpHeaders | { [header: string]: string | string[] },
-    observe?: HttpObserve,
-    params?: HttpParams | { [param: string]: string | string[] },
-    reportProgress?: boolean,
-    responseType?: 'arraybuffer' | 'blob' | 'json' | 'text',
-    withCredentials?: boolean,
-  } = {}): Observable<any> {
-    return this.httpClient.request(method, this.url(url), options);
+  request(method: string, url?: string, options: IHttpClientOptionsRequest = {}): Observable<any> {
+    const path = this.url(url);
+
+    if (this.debugApiCallLogger) {
+      this.debugApiCallLogger(method, path, this.constructor, options.body);
+    }
+
+    return this.httpClient.request(method, path, options);
   }
 
   delete(url: string, options: {
@@ -281,14 +354,7 @@ export abstract class BaseApiService {
     responseType?: 'json',
     withCredentials?: boolean,
   }): Observable<T>;
-  delete(url: string, options: {
-    headers?: HttpHeaders | { [header: string]: string | string[] },
-    observe?: HttpObserve,
-    params?: HttpParams | { [param: string]: string | string[] },
-    reportProgress?: boolean,
-    responseType?: 'arraybuffer' | 'blob' | 'json' | 'text',
-    withCredentials?: boolean,
-  } = {}): Observable<any> {
+  delete(url: string, options: IHttpClientOptionsDelete = {}): Observable<any> {
     return this.request<any>('DELETE', url, options as any);
   }
 
@@ -403,14 +469,7 @@ export abstract class BaseApiService {
     responseType?: 'json',
     withCredentials?: boolean,
   }): Observable<T>;
-  get(url: string, options: {
-    headers?: HttpHeaders | { [header: string]: string | string[] },
-    observe?: HttpObserve,
-    params?: HttpParams | { [param: string]: string | string[] },
-    reportProgress?: boolean,
-    responseType?: 'arraybuffer' | 'blob' | 'json' | 'text',
-    withCredentials?: boolean,
-  } = {}): Observable<any> {
+  get(url: string, options: IHttpClientOptionsGet = {}): Observable<any> {
     return this.request<any>('GET', url, options as any);
   }
 
@@ -525,14 +584,7 @@ export abstract class BaseApiService {
     responseType?: 'json',
     withCredentials?: boolean,
   }): Observable<T>;
-  head(url: string, options: {
-    headers?: HttpHeaders | { [header: string]: string | string[] },
-    observe?: HttpObserve,
-    params?: HttpParams | { [param: string]: string | string[] },
-    reportProgress?: boolean,
-    responseType?: 'arraybuffer' | 'blob' | 'json' | 'text',
-    withCredentials?: boolean,
-  } = {}): Observable<any> {
+  head(url: string, options: IHttpClientOptionsHead = {}): Observable<any> {
     return this.request<any>('HEAD', url, options as any);
   }
 
@@ -647,14 +699,7 @@ export abstract class BaseApiService {
     responseType?: 'json',
     withCredentials?: boolean,
   }): Observable<T>;
-  options(url: string, options: {
-    headers?: HttpHeaders | { [header: string]: string | string[] },
-    observe?: HttpObserve,
-    params?: HttpParams | { [param: string]: string | string[] },
-    reportProgress?: boolean,
-    responseType?: 'arraybuffer' | 'blob' | 'json' | 'text',
-    withCredentials?: boolean,
-  } = {}): Observable<any> {
+  options(url: string, options: IHttpClientOptionsOptions = {}): Observable<any> {
     return this.request<any>('OPTIONS', url, options as any);
   }
 
@@ -769,14 +814,7 @@ export abstract class BaseApiService {
     responseType?: 'json',
     withCredentials?: boolean,
   }): Observable<T>;
-  patch(url: string, options: {
-    headers?: HttpHeaders | { [header: string]: string | string[] },
-    observe?: HttpObserve,
-    params?: HttpParams | { [param: string]: string | string[] },
-    reportProgress?: boolean,
-    responseType?: 'arraybuffer' | 'blob' | 'json' | 'text',
-    withCredentials?: boolean,
-  } = {}): Observable<any> {
+  patch(url: string, options: IHttpClientOptionsPatch = {}): Observable<any> {
     return this.request<any>('PATCH', url, options as any);
   }
 
@@ -891,14 +929,7 @@ export abstract class BaseApiService {
     responseType?: 'json',
     withCredentials?: boolean,
   }): Observable<T>;
-  post(url: string, options: {
-    headers?: HttpHeaders | { [header: string]: string | string[] },
-    observe?: HttpObserve,
-    params?: HttpParams | { [param: string]: string | string[] },
-    reportProgress?: boolean,
-    responseType?: 'arraybuffer' | 'blob' | 'json' | 'text',
-    withCredentials?: boolean,
-  } = {}): Observable<any> {
+  post(url: string, options: IHttpClientOptionsPost = {}): Observable<any> {
     return this.request<any>('POST', url, options as any);
   }
 
@@ -1013,14 +1044,7 @@ export abstract class BaseApiService {
     responseType?: 'json',
     withCredentials?: boolean,
   }): Observable<T>;
-  put(url: string, options: {
-    headers?: HttpHeaders | { [header: string]: string | string[] },
-    observe?: HttpObserve,
-    params?: HttpParams | { [param: string]: string | string[] },
-    reportProgress?: boolean,
-    responseType?: 'arraybuffer' | 'blob' | 'json' | 'text',
-    withCredentials?: boolean,
-  } = {}): Observable<any> {
+  put(url: string, options: IHttpClientOptionsPut = {}): Observable<any> {
     return this.request<any>('PUT', url, options as any);
   }
 

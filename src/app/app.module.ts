@@ -8,10 +8,8 @@ import {AppRoutingModule}        from './app-routing.module';
 import {AppComponent}            from './app.component';
 import {HomeModule}              from './home/home.module';
 import {PageNotFoundComponent}   from './page-not-found/page-not-found.component';
-import {ComponentsModule}        from './shared/components/components.module';
 import './shared/rxjs-imports';
-import {httpProviders}           from './shared/services/http/http-providers';
-import {WordpressService}        from './shared/services/wordpress.service';
+import {SharedModule}            from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -21,16 +19,12 @@ import {WordpressService}        from './shared/services/wordpress.service';
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
     BrowserAnimationsModule,
-    ComponentsModule,
+    SharedModule,
     HomeModule,
     HttpClientModule,
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     // leave AppRoutingModule last, or submodule routing won't work
     AppRoutingModule
-  ],
-  providers: [
-    httpProviders,
-    WordpressService
   ],
   bootstrap: [AppComponent]
 })

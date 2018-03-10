@@ -1,0 +1,18 @@
+<h1 *ngIf="githubAvailable">Some of our repos</h1>
+<app-feature-card *ngFor="let repo of featuredRepos" [href]="repo.repoUrl"
+                  [hidden]="repo.name === 'unknown' || !githubAvailable">
+  <h3>{{repo.name}}</h3>
+  <p>
+    {{repo.description}}
+  </p>
+</app-feature-card>
+
+<div class="github-alternative" *ngIf="!githubAvailable">
+  <h2>
+    You can learn more about our code repositories at
+    https://github.com/sakuraapi<a href="https://github.com/sakuraapi"></a>
+  </h2>
+  <p>
+    (Github's API isn't currently returning useful results, so we can't show you our repos here)
+  </p>
+</div>

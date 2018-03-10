@@ -2,7 +2,7 @@ import {WordpressPost} from './wordpress-post';
 
 describe('WordpressPost', () => {
   it('fromJson', () => {
-    const source = singlePostResponseJson[0];
+    const source = listPostResponseJson[0];
     const result = WordpressPost.fromJson(source);
 
     expect(result.date.toISOString().startsWith(source.date_gmt)).toBeTruthy();
@@ -29,8 +29,8 @@ describe('WordpressPost', () => {
   });
 
   it('fromJsonArray', () => {
-    const source = singlePostResponseJson[0];
-    const result = WordpressPost.fromJsonArray(singlePostResponseJson)[0];
+    const source = listPostResponseJson[0];
+    const result = WordpressPost.fromJsonArray(listPostResponseJson)[0];
 
     expect(result.date.toISOString().startsWith(source.date_gmt)).toBeTruthy();
     expect(result.guid).toBe(source.guid);
@@ -56,7 +56,7 @@ describe('WordpressPost', () => {
   });
 });
 
-export const singlePostResponseJson = [
+export const listPostResponseJson = [
   {
     'id': 67,
     'date': '2018-02-07T17:06:06',
