@@ -9,12 +9,13 @@ import {LogService} from './log.service';
 
 describe('LogService', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        SharedModule
-      ]
-    });
+    TestBed
+      .configureTestingModule({
+        imports: [
+          HttpClientTestingModule,
+          SharedModule
+        ]
+      });
   });
 
   it('should be created', inject([LogService], (service: LogService) => {

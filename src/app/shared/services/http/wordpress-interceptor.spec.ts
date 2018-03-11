@@ -4,7 +4,7 @@ import {
   HttpTestingController
 }                             from '@angular/common/http/testing';
 import {TestBed}              from '@angular/core/testing';
-import {httpProviders}        from './http-providers';
+import {SharedModule}         from '../../shared.module';
 import {WordpressApiService}  from './wordpress-api.service';
 import {WordpressInterceptor} from './wordpress-interceptor';
 
@@ -17,10 +17,8 @@ describe('Wordpress Interceptor', () => {
     TestBed
       .configureTestingModule({
         imports: [
-          HttpClientTestingModule
-        ],
-        providers: [
-          httpProviders
+          HttpClientTestingModule,
+          SharedModule
         ]
       });
 

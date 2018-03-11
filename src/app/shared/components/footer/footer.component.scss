@@ -2,12 +2,16 @@
 
 :host {
   @extend %app-defaults;
+
   flex-direction: row;
   margin-top: 25px;
+  padding: 20px;
 
   background-color: colorPrimary();
 
-  padding: 20px;
+  @include media-mobile() {
+    flex-direction: column;
+  }
 
   p {
     color: colorForegroundInverted();
@@ -15,5 +19,21 @@
 
   div {
     width: 50%;
+
+    // menu horizontal
+    @include media-mobile() {
+      app-menu::ng-deep {
+        ul {
+          flex-direction: row;
+          li {
+            margin-top: 0 !important;
+
+            &:not(:last-child) {
+              margin-right: 5px;
+            }
+          }
+        }
+      }
+    }
   }
 }

@@ -4,9 +4,9 @@ import {
   HttpTestingController
 }                          from '@angular/common/http/testing';
 import {TestBed}           from '@angular/core/testing';
+import {SharedModule}      from '../../shared.module';
 import {GithubApiService}  from './github-api.service';
 import {GithubInterceptor} from './github-interceptor';
-import {httpProviders}     from './http-providers';
 
 describe('Github Interceptor', () => {
   let api: GithubApiService;
@@ -17,10 +17,8 @@ describe('Github Interceptor', () => {
     TestBed
       .configureTestingModule({
         imports: [
-          HttpClientTestingModule
-        ],
-        providers: [
-          httpProviders
+          HttpClientTestingModule,
+          SharedModule
         ]
       });
 

@@ -4,10 +4,10 @@ import {
 }                             from '@angular/common/http/testing';
 import {TestBed}              from '@angular/core/testing';
 import {orgReposResponseJson} from '../models/github-repo.spec';
+import {SharedModule}         from '../shared.module';
 
 import {GithubService}    from './github.service';
 import {GithubApiService} from './http/github-api.service';
-import {httpProviders}    from './http/http-providers';
 
 describe('GithubService', () => {
   let api: GithubApiService;
@@ -18,11 +18,8 @@ describe('GithubService', () => {
     TestBed
       .configureTestingModule({
         imports: [
-          HttpClientTestingModule
-        ],
-        providers: [
-          httpProviders,
-          GithubService
+          HttpClientTestingModule,
+          SharedModule
         ]
       });
 

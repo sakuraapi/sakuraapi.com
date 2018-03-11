@@ -6,5 +6,18 @@
   .content {
     padding: 25px;
     justify-content: center;
+
+    @include media-mobile() {
+      padding: 0;
+    }
+  }
+
+  .gradient {
+    background: linear-gradient(to right bottom, colorAccent() 10%, colorSecondary(5) 75%);;
+    min-height: 500px;
+  }
+
+  .no-padding {
+    padding: 0;
   }
 }

@@ -4,7 +4,7 @@ import {
 }                             from '@angular/common/http/testing';
 import {TestBed}              from '@angular/core/testing';
 import {listPostResponseJson} from '../models/wordpress-post.spec';
-import {httpProviders}        from './http/http-providers';
+import {SharedModule}         from '../shared.module';
 import {WordpressApiService}  from './http/wordpress-api.service';
 import {WordpressService}     from './wordpress.service';
 
@@ -17,11 +17,8 @@ describe('WordpressService', () => {
     TestBed
       .configureTestingModule({
         imports: [
-          HttpClientTestingModule
-        ],
-        providers: [
-          httpProviders,
-          WordpressService
+          HttpClientTestingModule,
+          SharedModule
         ]
       });
 

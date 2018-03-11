@@ -3,13 +3,26 @@
 :host {
   @extend %app-defaults;
 
-  border: 5px solid transparent;
   padding: 5px;
-  width: 25%;
   margin: 10px;
+
+  width: 25%;
   cursor: pointer;
 
+  @include media-medium() {
+    flex-basis: 60%;
+  }
+
+  @include media-mobile() {
+    flex-basis: 50%;
+
+    margin: 0;
+    margin-bottom: 20px;
+    min-width: 75%;
+  }
+
   mat-card {
+    height: 100%;
     padding: 0;
 
     mat-card-header {
@@ -17,7 +30,10 @@
     }
     mat-card-content {
       padding: 24px;
-      min-height: 75px;
+
+      @include media-mobile() {
+        padding: 12px;
+      }
     }
   }
 

@@ -55,10 +55,6 @@
         @include media-mobile() {
           margin-right: 5%;
           margin-left: 5%;
-
-          p:after {
-            content: ' \23CE';
-          }
         }
       }
 

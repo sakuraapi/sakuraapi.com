@@ -1,0 +1,7 @@
+web:
+  image: nginx
+  volumes:
+    - ../dist:/usr/share/nginx/html
+    - ../docker/local-nginx.conf:/etc/nginx/nginx.conf
+  ports:
+   - "127.0.0.1:4200:80"
