@@ -5,7 +5,7 @@ import {
   Input,
   OnInit
 }                                from '@angular/core';
-import {GithubService}           from '../../services/github.service';
+import {BrowserService}          from '../../services/browser.service';
 import {FeatureCardStateService} from './feature-card-state.service';
 
 @Component({
@@ -25,8 +25,8 @@ export class FeatureCardComponent implements OnInit {
     return this.hidden ? 'none' : '';
   }
 
-  constructor(private cardState: FeatureCardStateService,
-              private github: GithubService) {
+  constructor(private browser: BrowserService,
+              private cardState: FeatureCardStateService) {
     this.borderColor = cardState.nextColor();
   }
 
@@ -35,7 +35,7 @@ export class FeatureCardComponent implements OnInit {
 
   @HostListener('click')
   onClick() {
-    window.location.href = this.href;
+    this.browser.window.location.href = this.href;
   }
 
 }

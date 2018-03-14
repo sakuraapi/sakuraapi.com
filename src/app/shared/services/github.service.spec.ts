@@ -3,6 +3,7 @@ import {
   HttpTestingController
 }                             from '@angular/common/http/testing';
 import {TestBed}              from '@angular/core/testing';
+import {MockSwProvider}       from '../../app.component.spec';
 import {orgReposResponseJson} from '../models/github-repo.spec';
 import {SharedModule}         from '../shared.module';
 
@@ -20,6 +21,9 @@ describe('GithubService', () => {
         imports: [
           HttpClientTestingModule,
           SharedModule
+        ],
+        providers: [
+          MockSwProvider
         ]
       });
 

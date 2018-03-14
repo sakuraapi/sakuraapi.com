@@ -10,11 +10,13 @@ import {AppComponent}        from './app.component';
 import {SharedModule}        from './shared/shared.module';
 
 @Injectable()
-class MockSwUpdate {
+export class MockSwUpdate {
   available(): Observable<any> {
     return Observable.of();
   }
 }
+
+export const MockSwProvider = {provide: SwUpdate, useClass: MockSwUpdate};
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -28,7 +30,7 @@ describe('AppComponent', () => {
           AppComponent
         ],
         providers: [
-          {provide: SwUpdate, useClass: MockSwUpdate}
+          MockSwProvider
         ]
       }).compileComponents();
   }));

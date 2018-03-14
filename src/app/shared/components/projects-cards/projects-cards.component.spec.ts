@@ -4,6 +4,7 @@ import {
   ComponentFixture,
   TestBed
 }                                from '@angular/core/testing';
+import {MockSwProvider}          from '../../../app.component.spec';
 import {SharedModule}            from '../../shared.module';
 
 import {ProjectsCardsComponent} from './projects-cards.component';
@@ -18,6 +19,9 @@ describe('ProjectsCardsComponent', () => {
         imports: [
           HttpClientTestingModule,
           SharedModule
+        ],
+        providers: [
+          MockSwProvider
         ]
       })
       .compileComponents();

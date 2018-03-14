@@ -10,10 +10,15 @@ import {LogoComponent}           from './components/logo/logo.component';
 import {MenuComponent}           from './components/menu/menu.component';
 import {ProjectsCardsComponent}  from './components/projects-cards/projects-cards.component';
 import {TaglineBannerComponent}  from './components/tagline-banner/tagline-banner.component';
+import {BrowserService}          from './services/browser.service';
 import {GithubService}           from './services/github.service';
 import {GoogleAnalyticsService}  from './services/google-analytics.service';
 import {httpProviders}           from './services/http/http-providers';
 import {LogService}              from './services/log.service';
+import {
+  LocalStorageService,
+  SessionStorageService
+}                                from './services/storage.service';
 import {WordpressService}        from './services/wordpress.service';
 
 @NgModule({
@@ -43,11 +48,14 @@ import {WordpressService}        from './services/wordpress.service';
     TaglineBannerComponent
   ],
   providers: [
+    BrowserService,
     FeatureCardStateService,
     httpProviders,
     GithubService,
     GoogleAnalyticsService,
+    LocalStorageService,
     LogService,
+    SessionStorageService,
     WordpressService
   ]
 })

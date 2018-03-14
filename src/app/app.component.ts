@@ -1,9 +1,11 @@
 import {
   Component,
   OnInit
-}                   from '@angular/core';
-import {SwUpdate}   from '@angular/service-worker';
-import {LogService} from './shared/services/log.service';
+}                            from '@angular/core';
+import {SwUpdate}            from '@angular/service-worker';
+import {BrowserService}      from './shared/services/browser.service';
+import {LogService}          from './shared/services/log.service';
+import {LocalStorageService} from './shared/services/storage.service';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +14,13 @@ import {LogService} from './shared/services/log.service';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private log: LogService,
+  constructor(private browser: BrowserService,
+              private log: LogService,
+              private store: LocalStorageService,
               private swUpdate: SwUpdate) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     if (this.swUpdate.isEnabled) {
       this
         .swUpdate
@@ -25,7 +29,7 @@ export class AppComponent implements OnInit {
           this.log.info('Service worker update available');
 
           if (confirm('A new version of the site is available. Reload?')) {
-            window.location.reload();
+            this.browser.window.location.reload();
           }
         });
     }

@@ -5,6 +5,7 @@ import {
   TestBed
 }                                from '@angular/core/testing';
 import {NoopAnimationsModule}    from '@angular/platform-browser/animations';
+import {MockSwProvider}          from '../app.component.spec';
 import {SharedModule}            from '../shared/shared.module';
 import {HomeComponent}           from './home.component';
 
@@ -22,6 +23,9 @@ describe('HomeComponent', () => {
           HttpClientTestingModule,
           NoopAnimationsModule,
           SharedModule
+        ],
+        providers: [
+          MockSwProvider
         ]
       })
       .compileComponents();

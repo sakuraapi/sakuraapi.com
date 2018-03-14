@@ -1,7 +1,9 @@
 import {Injectable}       from '@angular/core';
 import {Observable}       from 'rxjs/Observable';
 import {GithubRepo}       from '../models/github-repo';
+import {BrowserService}   from './browser.service';
 import {GithubApiService} from './http/github-api.service';
+import {LogService}       from './log.service';
 
 const cacheOptions = {
   repoCacheLife: 1000 * 60 * 60, // 60 min
@@ -14,7 +16,9 @@ export class GithubService {
 
   private repoCache$: Observable<GithubRepo[]>;
 
-  constructor(private api: GithubApiService) {
+  constructor(private api: GithubApiService,
+              private browser: BrowserService,
+              private log: LogService) {
   }
 
   /**
@@ -26,9 +30,16 @@ export class GithubService {
   getRepositories(): Observable<GithubRepo[]> {
 
     if (!this.repoCache$) {
+      this.log.debug('repoCache$ miss');
+
       this
         .repoCache$ = Observable
         .defer(() => {
+          if (!this.browser.hasServiceWorker && this.browser.hasCache) {
+            // probably running in non-production mode
+          }
+
+          // return Observable.of([]);
           return this
             .api
             .get('/orgs/sakuraapi/repos', {observe: 'response'})
