@@ -7,7 +7,7 @@ import {
   SessionStorageService
 }                       from './storage.service';
 
-fdescribe('StorageService', () => {
+describe('StorageService', () => {
 
   const store = {
     local: undefined as LocalStorageService,
@@ -117,6 +117,18 @@ fdescribe('StorageService', () => {
     });
   });
 
+  it('getStorageEngine', async (done) => {
+    try {
+      for (const type of stores) {
+        const result = await store[type].getStorageEngine().toPromise();
+        expect(result).toBe((type === 'session') ? 'session' : 'asyncStorage', type);
+        done();
+      }
+    } catch (err) {
+      done.fail(err);
+    }
+  });
+
   describe('observe', () => {
     it('emits when setItem updates an entry', async (done) => {
       try {
@@ -162,6 +174,42 @@ fdescribe('StorageService', () => {
     });
   });
 
+  it('key', async (done) => {
+    try {
+      for (const type of stores) {
+        await store[type].setItem('val1', 1).toPromise();
+        await store[type].setItem('val2', 2).toPromise();
+
+        expect(await store[type].key(0).toPromise()).toBe(store[type]['getKey']('val1'));
+        expect(await store[type].key(1).toPromise()).toBe(store[type]['getCacheKey']('val1'));
+        expect(await store[type].key(2).toPromise()).toBe(store[type]['getKey']('val2'));
+        expect(await store[type].key(3).toPromise()).toBe(store[type]['getCacheKey']('val2'));
+
+      }
+      done();
+    } catch (err) {
+      done.fail(err);
+    }
+  });
+
+  it('length', async (done) => {
+    try {
+
+      for (const type of stores) {
+        await store[type].setItem('test-val-1', true).toPromise();
+        await store[type].setItem('test-val-2', true).toPromise();
+        await store[type].setItem('test-val-3', true).toPromise();
+        await store[type].setItem('test-val-4', true).toPromise();
+        expect(await store[type].length().toPromise()).toBe(8);
+      }
+
+      done();
+    } catch (err) {
+      done.fail(err);
+    }
+
+  });
+
   it('removeItem', async (done) => {
     try {
       for (const type of stores) {
@@ -197,15 +245,10 @@ fdescribe('StorageService', () => {
       try {
         for (const type of stores) {
           await store[type].setItem('test', 'test value').toPromise();
-
-          const valueField = (type === 'session')
-            ? `${store.session.prefix}-test`
-            : 'test';
-          const cacheField = (type === 'session')
-            ? `${store.session.prefix}-test-${store.session.cachePostfix}`
-            : 'test-ttl';
-          expect(await store[type].key(0).toPromise()).toBe(valueField, type);
-          expect(await store[type].key(1).toPromise()).toBe(cacheField, type);
+          const valueKey = store[type]['getKey']('test');
+          const cacheKey = store[type]['getCacheKey']('test');
+          expect(await store[type].key(0).toPromise()).toBe(valueKey, type);
+          expect(await store[type].key(1).toPromise()).toBe(cacheKey, type);
         }
 
         done();
@@ -216,15 +259,15 @@ fdescribe('StorageService', () => {
 
   });
 
-  describe('cache expiration', () => {
-    it('expires value', async (done) => {
+  describe('cache', () => {
+    it('getItem expires value', async (done) => {
 
       try {
 
         for (const type of stores) {
           await store[type].setItem('test', 'should be expired (null)', 1).toPromise();
           expect(await store[type].getItem('test').toPromise()).toBe('should be expired (null)', type);
-          // wait two seconds
+
           await new Promise((resolve) => setTimeout(resolve, 1010));
           expect(await store[type].getItem('test').toPromise()).toBe(null, type);
         }
@@ -233,7 +276,42 @@ fdescribe('StorageService', () => {
       } catch (err) {
         done.fail(err);
       }
+    });
 
+    it('getItem removes expired value', async (done) => {
+
+      try {
+
+        for (const type of stores) {
+          await store[type].setItem('test', 'should be expired (null)', 1).toPromise();
+          expect(await store[type].getItem('test').toPromise()).toBe('should be expired (null)', type);
+
+          await new Promise((resolve) => setTimeout(resolve, 1010));
+          expect(await store[type].getItem('test').toPromise()).toBe(null, type);
+          expect(await store[type].key(0).toPromise()).toBe(null, type);
+        }
+
+        done();
+      } catch (err) {
+        done.fail(err);
+      }
+    });
+
+    it('clearExpiredCache', async (done) => {
+      try {
+        for (const type of stores) {
+          await store[type].setItem('test', 'some value', 1).toPromise();
+          expect(await store[type].getItem('test').toPromise()).toBe('some value');
+
+          await new Promise((resolve) => setTimeout(resolve, 1010));
+          await store[type].clearExpiredCache().toPromise();
+          expect(await store[type].getItem('test').toPromise()).toBe(null, type);
+        }
+
+        done();
+      } catch (err) {
+        done.fail(err);
+      }
     });
   });
 });

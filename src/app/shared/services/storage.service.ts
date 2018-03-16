@@ -1,62 +1,48 @@
-import {Injectable}     from '@angular/core';
+import {
+  Injectable,
+  InjectionToken,
+  NgModule
+}                       from '@angular/core';
 import * as localforage from 'localforage';
 import {Observable}     from 'rxjs/Observable';
 import {Subject}        from 'rxjs/Subject';
-import {BrowserService} from './browser.service';
 
-export type StorageType = 'local' | 'session';
-
-const PREFIX = 'app';
-const CACHE_TTL_PREFIX = 'ttl';
+export const WINDOW = new InjectionToken('Window');
+export type StorageEngine = 'asyncStorage' | 'localStorageWrapper' | 'session' | 'webSQLStorage';
 
 /**
- * Handles local and session storage.
- * For example, to set a session value:
- *    storage.session.setItem('someKey', 'someValue');
- *
- * To store an object (must be JSON.stingifyable):
- *    storage.session.setJson('someKey', {someObject: true});
- *
- * You can also subscribe to an observable for that item:
- *    let someKey$ = storage.session.getObservable('someKey');
- *    someKey$.subscribe({
- *      next: (value) => console.log(value);
- *    });
- *
- *    Once you have an observable, if you call setItem(...) or setJson(...)
- *    the value of the observable's next will be either a string or an Object accordingly.
- *
- * You can clear your storage:
- *    storage.session.clear();
- *
- * You can remove an item:
- *    storage.session.removeItem('someKey');
- *
- *    Note: this will call complete() on the Subject which will cause
- *    complete to fire on the Observables and the Subject will then be deleted.
- *    If you then set a value with the same key, a new Subject will be created
- *    so you need to also get new Observables for it.
- *
- *    As mentioned above, you can call setItem(...) and setJson(...) as many times
- *    as you want, and that will fire the Observables.
- *
- * To change the prefix for the keys, change the storage.prefix value to the string you want.
+ * Base class for storage services. Supports:
+ *  - ttl caching (including active garbage collection of expired items)
+ *  - observing entries for changes
+ *  - intercepting an observable and returning a cache result, if valid
  */
 export abstract class BaseStorageService {
 
-  protected _storageEngine;
+  /**
+   * Sets the name of the database in IndexedDB or Web SQL, otherwise sets the first part of the prefix for the item
+   * name in local or session storage (e.g., db_name/collection_name/item_name).
+   * @returns {string}
+   */
+  abstract get dbName(): string;
 
-  get prefix(): string {
-    return PREFIX;
-  }
+  /**
+   * Sets what gets attached to the cache metadata entry to identify it as such. For example, if you have an
+   * item named "magic-item", and your cache postfix is set to "ttl", then your cache metadata entry for "magic-item"
+   * will be "magic-item-ttl". Pick a postfix that won't collide with other entries you're using.
+   * @returns {string}
+   */
+  abstract get cachePostfix(): string;
 
-  get cachePostfix(): string {
-    return CACHE_TTL_PREFIX;
-  }
+  /**
+   * Sets the name of the collection in IndexedDB or Web SQL, otherwise sets the second part of the prefix for the item
+   * name in local or session storage (e.g., db_name/collection_name/item_name).
+   * @returns {string}
+   */
+  abstract get collectionName(): string;
 
   /**
    * As items are added, their Subjects are instantiated to allow Observing of that item via
-   * [[StorageService.local.getObservable]] or [[StorageService.session.getObservable]].
+   * [[StorageService.observe]].
    */
   private subjects = {};
   private isLocalForage = false;
@@ -65,7 +51,12 @@ export abstract class BaseStorageService {
     this.isLocalForage = 'setDriver' in this.store;
   }
 
-  clear(): Observable<number> {
+  /**
+   * Clears all entries for the data store
+   * @param {boolean} all
+   * @returns {Observable<number>}
+   */
+  clear(all = true): Observable<number> {
     const p = async (): Promise<number> => {
 
       const len = await this.length().toPromise();
@@ -84,23 +75,57 @@ export abstract class BaseStorageService {
   }
 
   /**
+   * Purges all expired cache entries in storage. This should be called during application startup
+   * to remove any entries that weren't actively removed prior to application shutdown. You could
+   * also call this in the onDestroy hook for your application.
+   * @returns {Observable<void>}
+   */
+  clearExpiredCache(): Observable<void> {
+    return this
+      .length()
+      .do(async (len) => {
+        // build an immutable list of keys
+        const keys = [];
+        for (let i = 0; i < len; i++) {
+          keys.push(await this.key(i).toPromise());
+        }
+
+        for (const key of keys) {
+          if (this.isCacheKey(key)) {
+            continue;
+          }
+
+          const rawKey = this.getRawKey(key);
+          if (rawKey === null) {
+            // isn't a key being managed by the storage service
+            continue;
+          }
+
+          const cache = await this.getItemCache(rawKey);
+          if (this.isCacheExpired(cache)) {
+            await this.removeItem(key);
+          }
+        }
+      })
+      .map(() => null);
+  }
+
+  /**
    * Gets an item from the storage library and supplies the result as an observable.
    * If the key does not exist, getItem() will return null to the subscriber.
    * @param {string} key
    * @returns {Observable<T>}
    */
   getItem<T>(key: string): Observable<T> {
-    const p = async (): Promise<T> => {
-      let val = await this.store.getItem(this.getKey(key));
-      const cache = await this.store.getItem(this.getCacheKey(key));
 
-      // expire if older than cache epoch expiry
-      if (cache > 0) {
-        const expire = new Date(+cache);
-        const now = new Date();
-        if (+now > +expire) {
-          val = null;
-        }
+    const p = async (): Promise<T> => {
+
+      let val = await this.store.getItem(this.getKey(key));
+      const cache = await this.getItemCache(key);
+
+      if (this.isCacheExpired(cache)) {
+        await this.removeItem(key).toPromise();
+        val = null;
       }
 
       return val;
@@ -109,7 +134,11 @@ export abstract class BaseStorageService {
     return Observable.fromPromise(p());
   }
 
-  abstract getStorageEngine(): Observable<string>;
+  /**
+   * Should return the name of the storage engine being used.
+   * @returns {Observable<string>}
+   */
+  abstract getStorageEngine(): Observable<StorageEngine>;
 
   /**
    * Gets an observable that emits an updated value each time its key is set. Use this to monitor changes to a key/value
@@ -130,7 +159,7 @@ export abstract class BaseStorageService {
    * @param {number} keyIndex
    * @returns {Observable<T>}
    */
-  key<T>(keyIndex: number): Observable<T> {
+  key(keyIndex: number): Observable<string> {
     const p = async () => {
       return await this.store.key(keyIndex);
     };
@@ -160,7 +189,7 @@ export abstract class BaseStorageService {
    * @param {string} key
    * @returns {Observable<void>}
    */
-  private removeItem(key: string): Observable<void> {
+  removeItem(key: string): Observable<void> {
     const p = async () => {
 
       await Promise.all([
@@ -210,12 +239,105 @@ export abstract class BaseStorageService {
     return Observable.fromPromise(p());
   }
 
-  private getKey(key: string): string {
-    return (this.isLocalForage) ? key : `${this.prefix}-${key}`;
-  }
-
+  /**
+   * Builds the name for the cache key to use when storing an item
+   * @param {string} key
+   * @returns {string}
+   */
   private getCacheKey(key: string): string {
     return `${this.getKey(key)}-${this.cachePostfix}`;
+  }
+
+  /**
+   * Returns the cache metadata for the provided key (the key should be a raw key, not a stored key)
+   * @param {string} key the raw key for the item (i.e., the one you provided, not the one stored)
+   * @returns {Promise<number>}
+   */
+  private getItemCache(key: string): Promise<number> {
+    return this.store.getItem(this.getCacheKey(key));
+  }
+
+  /**
+   * Builds the name of the key to use when storing an item
+   * @param {string} key the name of the key to be stored
+   * @returns {string}
+   */
+  private getKey(key: string): string {
+    return (this.isLocalForage) ? key : `${this.getSessionPrefix()}${key}`;
+  }
+
+  /**
+   * Takes a stored key and returns it to its raw form (the key name the integrator provided)
+   * @param {string} key the stored key to be converted back to the raw key form
+   * @returns {string} returns null if the key is not a key compatible with the storage system (it got into the store
+   * by some other means than this library).
+   */
+  private getRawKey(key: string): string {
+    if (this.isLocalForage) {
+      return key;
+    }
+
+    const keyParts = key.split('/');
+    return keyParts.length === 3
+      ? (keyParts[0] === this.dbName && keyParts[1] === this.collectionName) ? keyParts[2] : null
+      : null;
+  }
+
+  /**
+   * Builds the prefix for items keys that are used for session storage (these are designed to match the
+   * keys used by localforages local storage keys.
+   * @returns {string}
+   */
+  private getSessionPrefix(): string {
+    return `${this.dbName}/${this.collectionName}/`;
+  }
+
+  /**
+   * Takes a stored key and returns true if it is a cache key (i.e., the entry is a cache metadata entry
+   * @param {string} key the key from storage
+   * @returns {boolean} true if the key matches tha pattern for a cache metadata entry
+   */
+  private isCacheKey(key: string): boolean {
+    if (this.isLocalForage) {
+      return key.endsWith(`-${this.cachePostfix}`);
+    }
+
+    const keyParts = key.split('/');
+    return keyParts.length === 3
+      ? keyParts[2].endsWith(`-${this.cachePostfix}`)
+      : null;
+  }
+
+  /**
+   * Takes a cache value and returns true if the cache is expired. Always returns false if the
+   * cache entry is 0 (i.e., no cache ttl was set)
+   * @param {number} cache the cache metadata for the entry
+   * @returns {boolean}
+   */
+  private isCacheExpired(cache: number): boolean {
+    if (cache > 0) {
+      const expire = new Date(+cache);
+      const now = new Date();
+      return (+now > +expire);
+    }
+
+    return false;
+  }
+
+}
+
+/**
+ * WindowService is the storage modules internal provider for `window.sessionStorage` and `localforage`. You
+ * can use this service as a hook if you need to mock the underlying storage engines during unit testing.
+ */
+@Injectable()
+export class WindowService {
+  get localforage() {
+    return localforage;
+  }
+
+  get sessionStorage() {
+    return window.sessionStorage;
   }
 }
 
@@ -226,28 +348,44 @@ export abstract class BaseStorageService {
 @Injectable()
 export class LocalStorageService extends BaseStorageService {
 
-  constructor() {
-    super(localforage);
-    localforage.config({
-      name: this.prefix + '_db',
-      storeName: this.prefix + '_kv_storage'
-    });
+  private storageEngine: StorageEngine;
+
+  get dbName(): string {
+    return 'app_db';
   }
 
-  getStorageEngine(): Observable<string> {
-    if (!this._storageEngine) {
-      return Observable.fromPromise(localforage
-        .ready()
-        .then<string>(() => {
-          this._storageEngine = localforage.driver();
-          return this._storageEngine;
-        })
-        .catch((err) => {
-          return Promise.reject(err);
-        }));
+  get cachePostfix(): string {
+    return 'ttl';
+  }
+
+  get collectionName(): string {
+    return 'app_kv_storage';
+  }
+
+  constructor(win: WindowService) {
+    super(win.localforage);
+    win.localforage
+      .config({
+        name: this.dbName,
+        storeName: this.collectionName
+      });
+  }
+
+  getStorageEngine(): Observable<StorageEngine> {
+    if (!this.storageEngine) {
+      return Observable
+        .fromPromise(
+          localforage
+            .ready()
+            .then(() => {
+              this.storageEngine = localforage.driver() as StorageEngine;
+              return this.storageEngine;
+            })
+            .catch(Promise.reject)
+        );
     }
 
-    return Observable.of(this._storageEngine);
+    return Observable.of(this.storageEngine);
   }
 }
 
@@ -256,9 +394,20 @@ export class LocalStorageService extends BaseStorageService {
  */
 @Injectable()
 export class SessionStorageService extends BaseStorageService {
-  constructor(browserService: BrowserService) {
-    super(browserService.sessionStorage);
-    this._storageEngine = 'session';
+  get dbName(): string {
+    return 'app_db';
+  }
+
+  get cachePostfix(): string {
+    return 'ttl';
+  }
+
+  get collectionName(): string {
+    return 'app_kv_storage';
+  }
+
+  constructor(win: WindowService) {
+    super(win.sessionStorage);
   }
 
   getItem<T>(key: string): Observable<T> {
@@ -275,8 +424,8 @@ export class SessionStorageService extends BaseStorageService {
       });
   }
 
-  getStorageEngine(): Observable<string> {
-    return Observable.of(this._storageEngine);
+  getStorageEngine(): Observable<StorageEngine> {
+    return Observable.of<StorageEngine>('session');
   }
 
   setItem<T>(key: string, value: T, cacheTTL = 0, gc = false): Observable<T> {
@@ -301,4 +450,14 @@ export class SessionStorageService extends BaseStorageService {
         return result;
       });
   }
+}
+
+@NgModule({
+  providers: [
+    LocalStorageService,
+    SessionStorageService,
+    WindowService
+  ]
+})
+export class StorageModule {
 }

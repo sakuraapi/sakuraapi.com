@@ -15,16 +15,14 @@ import {GithubService}           from './services/github.service';
 import {GoogleAnalyticsService}  from './services/google-analytics.service';
 import {httpProviders}           from './services/http/http-providers';
 import {LogService}              from './services/log.service';
-import {
-  LocalStorageService,
-  SessionStorageService
-}                                from './services/storage.service';
+import {StorageModule}           from './services/storage.service';
 import {WordpressService}        from './services/wordpress.service';
 
 @NgModule({
   imports: [
     CommonModule,
-    MatCardModule
+    MatCardModule,
+    StorageModule
   ],
   declarations: [
     FeatureCardComponent,
@@ -53,9 +51,7 @@ import {WordpressService}        from './services/wordpress.service';
     httpProviders,
     GithubService,
     GoogleAnalyticsService,
-    LocalStorageService,
     LogService,
-    SessionStorageService,
     WordpressService
   ]
 })
