@@ -1,13 +1,11 @@
 import {
   Injectable,
-  InjectionToken,
   NgModule
 }                       from '@angular/core';
 import * as localforage from 'localforage';
 import {Observable}     from 'rxjs/Observable';
 import {Subject}        from 'rxjs/Subject';
 
-export const WINDOW = new InjectionToken('Window');
 export type StorageEngine = 'asyncStorage' | 'localStorageWrapper' | 'session' | 'webSQLStorage';
 
 /**
@@ -40,6 +38,11 @@ export abstract class BaseStorageService {
    */
   abstract get collectionName(): string;
 
+  /**
+   * As garbage collected items are set, the reference to their timers are kept here. They are removed
+   * upon completion, upon `setItem` with an existing timer being called, or upon `removeItem` being called
+   */
+  private gcs = {};
   /**
    * As items are added, their Subjects are instantiated to allow Observing of that item via
    * [[StorageService.observe]].
@@ -201,6 +204,11 @@ export abstract class BaseStorageService {
   removeItem(key: string): Observable<void> {
     const p = async () => {
 
+      if (key in this.gcs) {
+        clearTimeout(this.gcs[key]);
+        delete this.gcs[key];
+      }
+
       await Promise.all([
         this.store.removeItem(this.getKey(key)),
         this.store.removeItem(this.getCacheKey(key))
@@ -233,6 +241,18 @@ export abstract class BaseStorageService {
         const now = new Date();
         now.setSeconds(now.getSeconds() + cacheTTL);
         cacheTTL = +now;
+      }
+
+      if (cacheTTL > 0 && gc) {
+        if (key in this.gcs) {
+          clearTimeout(this.gcs[key]);
+          delete this.gcs[key];
+        }
+
+        const ms = cacheTTL - +(new Date());
+        if (ms > 0) {
+          this.gcs[key] = setTimeout(() => this.removeItem(key), ms);
+        }
       }
 
       await Promise.all([

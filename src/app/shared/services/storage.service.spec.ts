@@ -314,6 +314,41 @@ describe('StorageService', () => {
       }
     });
 
+    it('garbage collects if told to', async (done) => {
+      try {
+        for (const type of stores) {
+          await store[type].setItem('test', 'a value', 1, true).toPromise();
+          expect(await store[type].getItem('test').toPromise()).toBe('a value', type);
+          expect(await store[type].length().toPromise()).toBe(2, type);
+
+          await new Promise((resolve) => setTimeout(resolve, 1010));
+          expect(await store[type].length().toPromise()).toBe(0, type);
+        }
+
+        done();
+      } catch (err) {
+        done.fail(err);
+      }
+    });
+
+    it('does not garbage collect by default', async (done) => {
+      try {
+        for (const type of stores) {
+          await store[type].setItem('test', 'a value', 1, false).toPromise();
+          expect(await store[type].getItem('test').toPromise()).toBe('a value', type);
+          expect(await store[type].length().toPromise()).toBe(2, type);
+
+          await new Promise((resolve) => setTimeout(resolve, 1010));
+          expect(await store[type].length().toPromise()).toBe(2, type);
+          expect(await store[type].getItem('test').toPromise()).toBe(null, type);
+        }
+
+        done();
+      } catch (err) {
+        done.fail(err);
+      }
+    });
+
     describe('getCachedObservable', () => {
       it('calls observable if not yet cached', async (done) => {
         try {
