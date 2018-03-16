@@ -140,6 +140,15 @@ export abstract class BaseStorageService {
    */
   abstract getStorageEngine(): Observable<StorageEngine>;
 
+  getCachedObservable<T>(key: string, observable: Observable<T>, cacheTTL = 0, gc = false): Observable<T> {
+    return this
+      .getItem(key)
+      .map((val) => val || null)
+      .flatMap((val: any) => (val !== null)
+        ? Observable.of(val)
+        : observable.flatMap((obsVal: any) => this.setItem(key, obsVal, cacheTTL, gc)));
+  }
+
   /**
    * Gets an observable that emits an updated value each time its key is set. Use this to monitor changes to a key/value
    * in the store.

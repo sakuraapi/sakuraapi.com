@@ -313,5 +313,52 @@ describe('StorageService', () => {
         done.fail(err);
       }
     });
+
+    describe('getCachedObservable', () => {
+      it('calls observable if not yet cached', async (done) => {
+        try {
+          for (const type of stores) {
+
+            const obs = Observable.of('observable called');
+            await store[type].getCachedObservable('test', obs).toPromise();
+            expect(await store[type].getItem('test').toPromise()).toBe('observable called', type);
+          }
+          done();
+        } catch (err) {
+          done.fail(err);
+        }
+      });
+
+      it('returns cached value instead of observable', async (done) => {
+        try {
+          for (const type of stores) {
+
+            const obs = Observable.of('observable called');
+            await store[type].setItem('test', 'cached value');
+            expect(await store[type].getCachedObservable('test', obs).toPromise()).toBe('cached value', type);
+          }
+          done();
+        } catch (err) {
+          done.fail(err);
+        }
+      });
+
+      it('returns observable value after cache expiration', async (done) => {
+        try {
+          for (const type of stores) {
+            const obs = Observable.of('observable called');
+            await store[type].setItem('test', 'cached value', 1);
+            expect(await store[type].getCachedObservable('test', obs).toPromise()).toBe('cached value', type);
+
+            await new Promise((resolve) => setTimeout(resolve, 1010));
+            expect(await store[type].getCachedObservable('test', obs).toPromise()).toBe('observable called', type);
+
+          }
+          done();
+        } catch (err) {
+          done.fail(err);
+        }
+      });
+    });
   });
 });
