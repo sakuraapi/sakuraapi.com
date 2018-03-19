@@ -5,13 +5,13 @@ import {
 }                         from '@angular/core';
 import {Observable}       from 'rxjs/Observable';
 import {Subject}          from 'rxjs/Subject';
+import {GithubApiService} from '../../../core/http/github-api.service';
 import {
   GithubRepo,
   repoIds
-}                         from '../../models/github-repo';
-import {GithubService}    from '../../services/github.service';
-import {GithubApiService} from '../../services/http/github-api.service';
-import {LogService}       from '../../services/log.service';
+}                         from '../../../core/models/github-repo';
+import {GithubService}    from '../../../core/services/github.service';
+import {LogService}       from '../../../core/services/log.service';
 
 @Component({
   selector: 'app-projects-cards',

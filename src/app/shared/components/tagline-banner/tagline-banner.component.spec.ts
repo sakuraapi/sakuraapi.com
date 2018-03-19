@@ -4,6 +4,7 @@ import {
   ComponentFixture,
   TestBed
 }                                from '@angular/core/testing';
+import {CoreModule}              from '../../../core/core.module';
 import {SharedModule}            from '../../shared.module';
 import {TaglineBannerComponent}  from './tagline-banner.component';
 
@@ -15,6 +16,7 @@ describe('TaglineBannerComponent', () => {
     TestBed
       .configureTestingModule({
         imports: [
+          CoreModule,
           HttpClientTestingModule,
           SharedModule
         ]

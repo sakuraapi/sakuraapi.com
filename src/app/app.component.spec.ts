@@ -7,6 +7,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {SwUpdate}            from '@angular/service-worker';
 import {Observable}          from 'rxjs/Observable';
 import {AppComponent}        from './app.component';
+import {CoreModule}          from './core/core.module';
 import {SharedModule}        from './shared/shared.module';
 
 @Injectable()
@@ -23,6 +24,7 @@ describe('AppComponent', () => {
     TestBed
       .configureTestingModule({
         imports: [
+          CoreModule,
           RouterTestingModule,
           SharedModule
         ],

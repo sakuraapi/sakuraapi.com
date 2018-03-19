@@ -1,5 +1,5 @@
 // Put anything you wanted loaded before your tests start here
-import './app/shared/rxjs-imports';
+import './app/rxjs-imports';
 
 // beforeAll(() => {
 //   // sample

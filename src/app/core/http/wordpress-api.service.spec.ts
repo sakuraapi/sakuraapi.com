@@ -3,8 +3,9 @@ import {
   HttpTestingController
 }                            from '@angular/common/http/testing';
 import {TestBed}             from '@angular/core/testing';
-import {environment}         from '../../../../environments/environment';
-import {SharedModule}        from '../../shared.module';
+import {environment}         from '../../../environments/environment';
+import {SharedModule}        from '../../shared/shared.module';
+import {CoreModule}          from '../core.module';
 import {WordpressApiService} from './wordpress-api.service';
 
 describe('WordpressApiService', () => {
@@ -14,6 +15,7 @@ describe('WordpressApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
+        CoreModule,
         HttpClientTestingModule,
         SharedModule
       ]

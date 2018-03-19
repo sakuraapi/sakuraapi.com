@@ -6,9 +6,10 @@ import {ServiceWorkerModule}     from '@angular/service-worker';
 import {environment}             from '../environments/environment';
 import {AppRoutingModule}        from './app-routing.module';
 import {AppComponent}            from './app.component';
+import {CoreModule}              from './core/core.module';
 import {HomeModule}              from './home/home.module';
 import {PageNotFoundComponent}   from './page-not-found/page-not-found.component';
-import './shared/rxjs-imports';
+import './rxjs-imports';
 import {SharedModule}            from './shared/shared.module';
 
 @NgModule({
@@ -19,6 +20,7 @@ import {SharedModule}            from './shared/shared.module';
   imports: [
     BrowserModule.withServerTransition({appId: 'serverApp'}),
     BrowserAnimationsModule,
+    CoreModule,
     SharedModule,
     HomeModule,
     HttpClientModule,

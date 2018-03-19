@@ -1,7 +1,8 @@
 import {TestBed}        from '@angular/core/testing';
 import {Observable}     from 'rxjs/Observable';
 import {MockSwProvider} from '../../app.component.spec';
-import {SharedModule}   from '../shared.module';
+import {SharedModule}   from '../../shared/shared.module';
+import {CoreModule}     from '../core.module';
 import {
   LocalStorageService,
   SessionStorageService
@@ -19,6 +20,7 @@ describe('StorageService', () => {
     TestBed
       .configureTestingModule({
         imports: [
+          CoreModule,
           SharedModule
         ],
         providers: [

@@ -3,15 +3,16 @@ import {
   inject,
   TestBed
 }                                from '@angular/core/testing';
-import {SharedModule}            from '../shared.module';
-
-import {LogService} from './log.service';
+import {SharedModule}            from '../../shared/shared.module';
+import {CoreModule}              from '../core.module';
+import {LogService}              from './log.service';
 
 describe('LogService', () => {
   beforeEach(() => {
     TestBed
       .configureTestingModule({
         imports: [
+          CoreModule,
           HttpClientTestingModule,
           SharedModule
         ]

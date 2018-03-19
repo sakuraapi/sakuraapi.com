@@ -3,9 +3,9 @@ import {
   OnInit
 }                            from '@angular/core';
 import {SwUpdate}            from '@angular/service-worker';
-import {BrowserService}      from './shared/services/browser.service';
-import {LogService}          from './shared/services/log.service';
-import {LocalStorageService} from './shared/services/storage.service';
+import {BrowserService}      from './core/services/browser.service';
+import {LogService}          from './core/services/log.service';
+import {LocalStorageService} from './core/services/storage.service';
 
 @Component({
   selector: 'app-root',

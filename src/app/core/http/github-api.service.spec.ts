@@ -4,7 +4,8 @@ import {
   HttpTestingController
 }                         from '@angular/common/http/testing';
 import {TestBed}          from '@angular/core/testing';
-import {SharedModule}     from '../../shared.module';
+import {SharedModule}     from '../../shared/shared.module';
+import {CoreModule}       from '../core.module';
 import {GithubApiService} from './github-api.service';
 import {httpProviders}    from './http-providers';
 
@@ -15,6 +16,7 @@ describe('GithubApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
+        CoreModule,
         HttpClientTestingModule,
         SharedModule
       ],

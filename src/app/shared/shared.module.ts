@@ -1,6 +1,7 @@
 import {CommonModule}            from '@angular/common';
 import {NgModule}                from '@angular/core';
 import {MatCardModule}           from '@angular/material';
+import {StorageModule}           from '../core/services/storage.service';
 import {FeatureCardStateService} from './components/feature-card/feature-card-state.service';
 import {FeatureCardComponent}    from './components/feature-card/feature-card.component';
 import {FooterComponent}         from './components/footer/footer.component';
@@ -10,13 +11,6 @@ import {LogoComponent}           from './components/logo/logo.component';
 import {MenuComponent}           from './components/menu/menu.component';
 import {ProjectsCardsComponent}  from './components/projects-cards/projects-cards.component';
 import {TaglineBannerComponent}  from './components/tagline-banner/tagline-banner.component';
-import {BrowserService}          from './services/browser.service';
-import {GithubService}           from './services/github.service';
-import {GoogleAnalyticsService}  from './services/google-analytics.service';
-import {httpProviders}           from './services/http/http-providers';
-import {LogService}              from './services/log.service';
-import {StorageModule}           from './services/storage.service';
-import {WordpressService}        from './services/wordpress.service';
 
 @NgModule({
   imports: [
@@ -46,13 +40,7 @@ import {WordpressService}        from './services/wordpress.service';
     TaglineBannerComponent
   ],
   providers: [
-    BrowserService,
-    FeatureCardStateService,
-    httpProviders,
-    GithubService,
-    GoogleAnalyticsService,
-    LogService,
-    WordpressService
+    FeatureCardStateService
   ]
 })
 export class SharedModule {

@@ -5,6 +5,7 @@ import {
 }                       from '@angular/common/http/testing';
 import {Injectable}     from '@angular/core';
 import {TestBed}        from '@angular/core/testing';
+import {CoreModule}     from '../core.module';
 import {BaseApiService} from './base-api';
 
 describe('BaseApiService', () => {
@@ -22,6 +23,7 @@ describe('BaseApiService', () => {
     TestBed
       .configureTestingModule({
         imports: [
+          CoreModule,
           HttpClientTestingModule
         ],
         providers: [

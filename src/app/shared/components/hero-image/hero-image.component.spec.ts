@@ -2,9 +2,9 @@ import {
   async,
   ComponentFixture,
   TestBed
-}                     from '@angular/core/testing';
-import {SharedModule} from '../../shared.module';
-
+}                           from '@angular/core/testing';
+import {CoreModule}         from '../../../core/core.module';
+import {SharedModule}       from '../../shared.module';
 import {HeroImageComponent} from './hero-image.component';
 
 describe('HeroImageComponent', () => {
@@ -15,6 +15,7 @@ describe('HeroImageComponent', () => {
     TestBed
       .configureTestingModule({
         imports: [
+          CoreModule,
           SharedModule
         ]
       })

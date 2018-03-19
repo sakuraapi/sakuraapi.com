@@ -1,8 +1,8 @@
 import {HttpClient}          from '@angular/common/http';
 import {Injectable}          from '@angular/core';
 import {Observable}          from 'rxjs/Observable';
+import {WordpressApiService} from '../http/wordpress-api.service';
 import {WordpressPost}       from '../models/wordpress-post';
-import {WordpressApiService} from './http/wordpress-api.service';
 
 /*
  * For Wordpress API reference See: https://developer.wordpress.org/rest-api/reference/

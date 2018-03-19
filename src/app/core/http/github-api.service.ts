@@ -5,8 +5,8 @@ import {
 import {Injectable}  from '@angular/core';
 import {Observable}  from 'rxjs/Observable';
 import {Subject}     from 'rxjs/Subject';
-import {environment} from '../../../../environments/environment';
-import {LogService}  from '../log.service';
+import {environment} from '../../../environments/environment';
+import {LogService}  from '../services/log.service';
 import {
   BaseApiService,
   IHttpClientOptionsRequest

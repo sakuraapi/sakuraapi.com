@@ -3,9 +3,10 @@ import {
   HttpTestingController
 }                             from '@angular/common/http/testing';
 import {TestBed}              from '@angular/core/testing';
+import {SharedModule}         from '../../shared/shared.module';
+import {CoreModule}           from '../core.module';
+import {WordpressApiService}  from '../http/wordpress-api.service';
 import {listPostResponseJson} from '../models/wordpress-post.spec';
-import {SharedModule}         from '../shared.module';
-import {WordpressApiService}  from './http/wordpress-api.service';
 import {WordpressService}     from './wordpress.service';
 
 describe('WordpressService', () => {
@@ -17,6 +18,7 @@ describe('WordpressService', () => {
     TestBed
       .configureTestingModule({
         imports: [
+          CoreModule,
           HttpClientTestingModule,
           SharedModule
         ]

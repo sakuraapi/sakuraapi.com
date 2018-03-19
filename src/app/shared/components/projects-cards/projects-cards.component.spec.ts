@@ -5,9 +5,9 @@ import {
   TestBed
 }                                from '@angular/core/testing';
 import {MockSwProvider}          from '../../../app.component.spec';
+import {CoreModule}              from '../../../core/core.module';
 import {SharedModule}            from '../../shared.module';
-
-import {ProjectsCardsComponent} from './projects-cards.component';
+import {ProjectsCardsComponent}  from './projects-cards.component';
 
 describe('ProjectsCardsComponent', () => {
   let component: ProjectsCardsComponent;
@@ -17,6 +17,7 @@ describe('ProjectsCardsComponent', () => {
     TestBed
       .configureTestingModule({
         imports: [
+          CoreModule,
           HttpClientTestingModule,
           SharedModule
         ],

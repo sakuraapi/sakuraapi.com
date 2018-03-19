@@ -3906,17 +3906,13 @@ karma-coverage-istanbul-reporter@^1.4.2:
     istanbul-api "^1.1.14"
     minimatch "^3.0.4"
 
-karma-jasmine-html-reporter@0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/karma-jasmine-html-reporter/-/karma-jasmine-html-reporter-0.2.0.tgz#8ff2b4dec9be7b15fb461b731cbef3e6ce78b735"
+karma-jasmine-html-reporter@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/karma-jasmine-html-reporter/-/karma-jasmine-html-reporter-0.2.2.tgz#48a8e5ef18807617ee2b5e33c1194c35b439524c"
   dependencies:
-    karma-jasmine "~0.2"
+    karma-jasmine "^1.0.2"
 
-karma-jasmine@~0.2:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/karma-jasmine/-/karma-jasmine-0.2.3.tgz#c4d3dc1132d5ddc35dada95545c42ce0b6e9999b"
-
-karma-jasmine@~1.1.0:
+karma-jasmine@^1.0.2, karma-jasmine@~1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/karma-jasmine/-/karma-jasmine-1.1.1.tgz#6fe840e75a11600c9d91e84b33c458e1c46a3529"
 

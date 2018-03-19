@@ -5,7 +5,7 @@ import {
   HttpRequest
 }                    from '@angular/common/http';
 import {Observable}  from 'rxjs/Observable';
-import {environment} from '../../../../environments/environment';
+import {environment} from '../../../environments/environment';
 
 const baseUrl = (environment.api || {} as any).github || 'undefined';
 

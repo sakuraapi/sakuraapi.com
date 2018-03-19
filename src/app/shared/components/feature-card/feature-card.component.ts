@@ -5,7 +5,7 @@ import {
   Input,
   OnInit
 }                                from '@angular/core';
-import {BrowserService}          from '../../services/browser.service';
+import {BrowserService}          from '../../../core/services/browser.service';
 import {FeatureCardStateService} from './feature-card-state.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class FeatureCardComponent implements OnInit {
 
   @Input() href = '';
   @Input() hidden = false;
+  @Input() resetColors = false;
 
   @HostBinding('attr.border-color') borderColor: number;
 
@@ -27,6 +28,10 @@ export class FeatureCardComponent implements OnInit {
 
   constructor(private browser: BrowserService,
               private cardState: FeatureCardStateService) {
+
+    if (this.resetColors) {
+      cardState.resetColor();
+    }
     this.borderColor = cardState.nextColor();
   }
 

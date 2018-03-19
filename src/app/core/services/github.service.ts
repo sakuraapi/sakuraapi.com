@@ -1,8 +1,8 @@
 import {Injectable}       from '@angular/core';
 import {Observable}       from 'rxjs/Observable';
+import {GithubApiService} from '../http/github-api.service';
 import {GithubRepo}       from '../models/github-repo';
 import {BrowserService}   from './browser.service';
-import {GithubApiService} from './http/github-api.service';
 import {LogService}       from './log.service';
 
 const cacheOptions = {
